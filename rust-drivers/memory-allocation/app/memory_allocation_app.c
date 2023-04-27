@@ -56,6 +56,13 @@ int main(int argc, const char* argv) {
 		exit(EXIT_FAILURE);
 	}
 
+	printf("page mapped at: %p\nfirst bytes:\n", m);
+	for (size_t i = 0; i < 10; i++)
+	{
+		printf("%x\n", m[i]);
+	}
+	
+
 	munmap(m, sysconf(_SC_PAGESIZE));
 
 	close_driver(DRIVER_NAME, fd);

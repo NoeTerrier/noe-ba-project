@@ -3,7 +3,7 @@
 KDIR ?= /lib/modules/`uname -r`/build
 
 default:
-	$(MAKE) -C $(KDIR) M=$$PWD
+	$(MAKE) -C $(KDIR) M=$$PWD CC=clang
 
 clean:
-	@rm *.mod *.c *.ko *.o *.order *.symvers
+	@rm -f *.mod *.c *.ko *.o *.order *.symvers *.d .*.cmd

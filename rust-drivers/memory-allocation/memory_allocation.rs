@@ -4,12 +4,11 @@
 
 use kernel::prelude::*;
 use kernel::{
+    pages::Pages,
     mm::virt::Area,
     miscdev::Registration,
     file::{self, File}
 };
-
-use alloc::alloc::{alloc, dealloc, Layout};
 
 module! {
     type: AllocationDriver,
@@ -40,37 +39,31 @@ impl file::Operations for RustFile {
         let size = vma.end() - vma.start();
         
         // size must be positive
-        if (size <= 0) {
+        if size <= 0 {
             pr_err!("End is smaller than start");
             return Err(EINVAL);
         }
 
-        if(vma.start() % PAGE_SIZE != 0 || vma.end() % PAGE_SIZE != 0) {
+        if vma.start() % PAGE_SIZE != 0 || vma.end() % PAGE_SIZE != 0 {
             pr_err!("End or/Start is/are not page-aligned.");
             return Err(EINVAL);
         }
 
-        let layout = match Layout::from_size_align(size, PAGE_SIZE) {
-            Ok(l) => l,
-            Err(_) => return Err(EINVAL),
+        let page = match Pages::<0>::new() {
+            Ok(p) => p,
+            Err(e) => return Err(e),
         };
-
-        // allocation functions are unsafe
+        
+        vma.insert_page(vma.start(), &page).expect("Error at inserting page");
+        
+        // this must appear at the begining of the mapped address in user space
+        // writing functions are unsafe
         unsafe {
-            let ptr = alloc(layout);
-            
-            if ptr.is_null() {
-                pr_info!("Allocation failed\n");
-                return Err(EINVAL)
-            }
-
-            // test that allocation succeed
-            *(ptr as *mut u16) = 42;
-            assert_eq!(*(ptr as *mut u16), 42);
-            
-            dealloc(ptr, layout);
-            pr_info!("Allocation succeed"); // ?? this is never printed
+            let buffer: [u8; 4] = [1, 2, 3, 4];
+            page.write(buffer.as_ptr(), 0, 4).expect("Error writing to page");
         }
+
+        pr_info!("Allocation succeed\n");
         
         Ok(())
     }

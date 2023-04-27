@@ -2,8 +2,12 @@
 
 KDIR ?= /lib/modules/`uname -r`/build
 
+all: default app
+
 default:
-	$(MAKE) -C $(KDIR) M=$$PWD
+	$(MAKE) -C $(KDIR) M=$$PWD CC=clang
+
+app: app/memory_allocation_app
 
 clean:
-	@rm *.mod *.c *.ko *.o *.order *.symvers *.d *.mod
+	@rm -f *.mod *.c *.ko *.o *.order *.symvers *.d .*.cmd app/memory_allocation_app
