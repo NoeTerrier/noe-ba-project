@@ -7,3 +7,4 @@ ioctl_app
 *target*
 *.mod
 *.o_shipped
+*.d
