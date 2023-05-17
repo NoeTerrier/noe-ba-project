@@ -8,13 +8,11 @@ endif
 
 # make KDIR=/home/noe/linux
 KDIR ?= /lib/modules/`uname -r`/build
-ARCH ?= x86_64
-CROSS_COMPILE ?= x86_64-unknown-linux-gnu
 
 build-ko:
 	cd ext_crate && cargo build -v
-	cp ext_crate/target/x86_64-unknown-linux-gnu/debug/deps/ext_crate-*.o ext_crate.o_shipped
-	$(MAKE) -C $(KDIR) M=$$PWD ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE)
+	cp ext_crate/target/target/debug/deps/ext_crate-*.o ext_crate.o_shipped
+	$(MAKE) -C $(KDIR) M=$$PWD
 
 clean:
 	@rm -rf \

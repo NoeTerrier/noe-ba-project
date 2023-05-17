@@ -21,7 +21,7 @@ impl kernel::Module for HelloWorld {
         pr_info!("Hello world! (init)\n");
 
         let answer = add(5, 10);
-        pr_info!("Answer is : {}", answer);
+        pr_info!("Answer is : {}\n", answer);
 
 
         Ok(HelloWorld {})
