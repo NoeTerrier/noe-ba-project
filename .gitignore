@@ -2,7 +2,7 @@
 *.o
 *.ko
 ioctl_app
-*.toml
+*.lock
 *.bin
 *target*
 *.mod

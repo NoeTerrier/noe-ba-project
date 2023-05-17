@@ -1,21 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0
 
-//! Rust out-of-tree sample
-
 use kernel::prelude::*;
 use ext_crate::add;
 
 module! {
-    type: HelloWorld,
-    name: "hello_world",
+    type: Driver,
+    name: "driver",
     author: "Noe Terrier",
-    description: "Rust hello_world module",
+    description: "Rust driver with external crate",
     license: "GPL",
 }
 
-struct HelloWorld;
+struct Driver;
 
-impl kernel::Module for HelloWorld {
+impl kernel::Module for Driver {
     fn init(_name: &'static CStr, _module: &'static ThisModule) -> Result<Self> {
         
         pr_info!("Hello world! (init)\n");
@@ -24,11 +22,11 @@ impl kernel::Module for HelloWorld {
         pr_info!("Answer is : {}\n", answer);
 
 
-        Ok(HelloWorld {})
+        Ok(Driver {})
     }
 }
 
-impl Drop for HelloWorld {
+impl Drop for Driver {
     fn drop(&mut self) {
         pr_info!("Goodbye! (exit)\n");
     }
