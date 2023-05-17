@@ -1,0 +1,10 @@
+[build]
+target = "x86_64-unknown-linux-gnu"
+rustflags = [
+    "-Ctarget-cpu=native",
+    "--emit=obj",
+    "--extern", "kernel",
+    "--extern", "alloc",
+    "-L", "home/noe/linux/build/rust",
+    "-Cpanic=abort"
+]

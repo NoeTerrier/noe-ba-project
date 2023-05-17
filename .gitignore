@@ -2,3 +2,8 @@
 *.o
 *.ko
 ioctl_app
+*.toml
+*.bin
+*target*
+*.mod
+*.o_shipped

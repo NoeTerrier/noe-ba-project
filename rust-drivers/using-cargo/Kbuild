@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-2.0
+
+obj-m := hello_world.o
+# hello_world-objs := hello_world.rust.o
+
+rustflags-y := --extern ext_crate -L $(src)/ext_crate/target/x86_64-unknown-linux-gnu/debug/deps
+hello_world-y := hello_world_main.o ext_crate.o
